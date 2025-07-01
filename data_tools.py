@@ -41,19 +41,6 @@ def cross_folder(vein_path, palmprint_path, pv_path, sams=7, num_percase=10, num
                 newimg = os.path.join(pv_path, 'c{}_{}'.format(r+1, i-x)+'_sample'+'{}.png'.format(j))
                 cross(veinimg, palmimg, newimg)
 
-def cross(vein_path,palm_path, newpath):
-    img1 = cv2.imread(vein_path)
-    img2 = cv2.imread(palm_path)
-    img1 = cv2.resize(img1, (256, 256))
-    img2 = cv2.resize(img2, (256, 256))
-    h, w, c = img1.shape
-    img2gray = cv2.cvtColor(img2,cv2.COLOR_BGR2GRAY)
-    ret, mask = cv2.threshold(img2gray, 200, 255, cv2.THRESH_BINARY)
-    mask_inv = cv2.bitwise_not(mask)
-    img1_bg = cv2.bitwise_and(img1,img1, mask = mask)
-    img2_fg = cv2.bitwise_and(img2,img2, mask = mask_inv)
-    dst = cv2.add(img1_bg, img2_fg)
-    cv2.imwrite(newpath, dst)
 
 def aug(path, newpath):
 
