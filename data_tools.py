@@ -4,18 +4,11 @@ from PIL import Image
 from torchvision import transforms
 from tqdm import tqdm
 
-def add_white_border(image, top=124-10, bottom=124+10, left=84, right=84, color=(255, 255, 255)):
-    
-    bordered_image = cv2.copyMakeBorder(image, top, bottom, left, right, cv2.BORDER_CONSTANT, value=color)
-    
-    return bordered_image
-
 def cross(vein_path,palm_path, newpath):
- 
     img1 = cv2.imread(vein_path)
     img2 = cv2.imread(palm_path)
-    img2 = add_white_border(img2)
-    img1 = cv2.resize(img1, (424, 504))
+    img1 = cv2.resize(img1, (256, 256))
+    img2 = cv2.resize(img2, (256, 256))
     h, w, c = img1.shape
     img2gray = cv2.cvtColor(img2,cv2.COLOR_BGR2GRAY)
     ret, mask = cv2.threshold(img2gray, 200, 255, cv2.THRESH_BINARY)
@@ -24,7 +17,6 @@ def cross(vein_path,palm_path, newpath):
     img2_fg = cv2.bitwise_and(img2,img2, mask = mask_inv)
     dst = cv2.add(img1_bg, img2_fg)
     cv2.imwrite(newpath, dst)
-
 
 def cross_folder(vein_path, palmprint_path, pv_path, sams=7, num_percase=10, num_case=4):
     # sams: num of samples
